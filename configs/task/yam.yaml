@@ -58,6 +58,10 @@ model:
   lr_min_ratio: 0.0
   constant_end_ratio: 0.08
   weight_decay: 0.03
+  # Differential LR: finetune.py reads these from model top-level (cfg.model.get),
+  # NOT from model_arch. Placed under model_arch they are silently ignored.
+  vision_lr_multiplier: 0.1
+  backbone_lr_multiplier: 1.0
   processor:
     vlm_input_action_norm_default_mode: null
     vlm_input_action_norm_exception_mode: null
@@ -76,7 +80,6 @@ model:
       merge_spec: ${oc.load:configs/data/parts_meta/r1lite.yaml,merge_spec}
       merge: true
   model_arch:
-    vision_lr_multiplier: 0.1
     action_dim: 27
     proprio_dim: 27
     fm:
