@@ -1,0 +1,31 @@
+# G0.5 YAM deployment config — fill in the real values on the 工控机 (industrial PC).
+#
+# This config lives on the robot machine together with policy_client.py and
+# ws_transport.py, inside gello_software's venv.
+
+server:
+  host: "127.0.0.1"   # GPU machine IP (use 127.0.0.1 only if co-located)
+  port: 8765          # must match serve_policy.py --port
+
+robot:
+  # Lab PDF (YAM 使用指北) says the CAN interfaces are can_follower_l / can_follower_r,
+  # NOT the public gello defaults can_left / can_right. Still verify against the
+  # lab's own scripts/teleop source on the real machine — it is authoritative.
+  left_channel: "can_follower_l"
+  right_channel: "can_follower_r"
+
+policy:
+  task: "pick up the cup"           # instruction text (natural language)
+  embodiment_type: "galaxea_r1lite" # YAM reuses the r1lite shape
+  frequency: 30                     # control Hz; must match training (30Hz)
+
+cameras:
+  host: "127.0.0.1"
+  # TODO: confirm the real camera ports / mechanism. G0.5 expects THREE images
+  # keyed exactly: head_rgb, left_wrist_rgb, right_wrist_rgb. gello's default
+  # ZMQ camera ports are 5000 (wrist) and 5001 (base) — YAM may differ and may
+  # not have a third camera.
+  ports:
+    head_rgb: 5000
+    left_wrist_rgb: 5001
+    right_wrist_rgb: 5002   # TODO: verify a third camera actually exists
